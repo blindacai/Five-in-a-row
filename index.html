@@ -1,42 +1,58 @@
 <html>
-    <head>
-        <style>
-            .board{
-                display: flex;
-                width: 600px;
-                height: 600px;
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: flex-start;
-            }
 
-            .square{
-                height: 200px;
-                width: 200px;
-                box-sizing: border-box;
-                border: 5px solid black;
-            }
+<head>
+    <style>
+        .board {
+            display: flex;
+            width: 600px;
+            height: 600px;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        
+        .square {
+            height: 200px;
+            width: 200px;
+            box-sizing: border-box;
+            border: 5px solid black;
+            font-size: 5em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .square:hover {
+            cursor: pointer;
+            background-color: #80cd92;
+        }
+    </style>
+</head>
 
-            .square:hover{
-                background-color: #80cd92;
-            }
-        </style>        
-    </head>
+<body>
+    <div class="board">
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+    </div>
 
-    <body>
-        <div class = "board">
-            <div class = "square"></div>
-            <div class = "square"></div>
-            <div class = "square"></div>
-            <div class = "square"></div>
-            <div class = "square"></div>
-            <div class = "square"></div>
-            <div class = "square"></div>
-            <div class = "square"></div>
-            <div class = "square"></div>
-        </div>
+    <script>
+        var PLAYER_ONE_SYMBOL = 'x';
+        var PLAYER_TWO_SYMBOL = 'o';
+        var currentTurn = PLAYER_ONE_SYMBOL;
 
-        <script>
-        </script>
-    </body>
+        var board = document.querySelector('.board');
+        board.addEventListener('click', function(e) {
+            e.target.innerHTML = currentTurn;
+            currentTurn = currentTurn === PLAYER_ONE_SYMBOL ? PLAYER_TWO_SYMBOL : PLAYER_ONE_SYMBOL;
+        });
+    </script>
+</body>
+
 </html>
