@@ -31,36 +31,48 @@
 
 <body>
     <div class="board">
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
-        <div class="square"></div>
     </div>
 
     <script>
-        var PLAYER_ONE_SYMBOL = 'x';
-        var PLAYER_TWO_SYMBOL = 'o';
-        var currentTurn = PLAYER_ONE_SYMBOL;
+        var gameState = {
+            PLAYER_ONE_SYMBOL: "X",
+            PLAYER_TWO_SYMBOL: "O",
+            currentTurn: "X",
+            board: [
+                "", "", "", "", "", "", "", "", ""
+            ]
+        }
+
+        var render = function(state) {
+            document.querySelector('.board').innerHTML =
+                "<div class='square' data-square-id='0'>" + state.board[0] + "</div>" +
+                "<div class='square' data-square-id='1'>" + state.board[1] + "</div>" +
+                "<div class='square' data-square-id='2'>" + state.board[2] + "</div>" +
+                "<div class='square' data-square-id='3'>" + state.board[3] + "</div>" +
+                "<div class='square' data-square-id='4'>" + state.board[4] + "</div>" +
+                "<div class='square' data-square-id='5'>" + state.board[5] + "</div>" +
+                "<div class='square' data-square-id='6'>" + state.board[6] + "</div>" +
+                "<div class='square' data-square-id='7'>" + state.board[7] + "</div>" +
+                "<div class='square' data-square-id='8'>" + state.board[8] + "</div>"
+            return;
+        }
+
+        render(gameState);
 
         var board = document.querySelector('.board');
         board.addEventListener('click', function(e) {
-            e.target.innerHTML = currentTurn;
-            currentTurn = currentTurn === PLAYER_ONE_SYMBOL ? PLAYER_TWO_SYMBOL : PLAYER_ONE_SYMBOL;
+            var squareIndex = parseInt(e.target.dataset['squareId'], 10);
+            gameState.board[squareIndex] = gameState.currentTurn;
+            gameState.currentTurn = gameState.currentTurn === gameState.PLAYER_ONE_SYMBOL ?
+                gameState.PLAYER_TWO_SYMBOL : gameState.PLAYER_ONE_SYMBOL;
+
+            render(gameState);
             if (checkForWinner()) {
                 alert("somebody won");
             }
         });
 
         function checkForWinner() {
-            var squares = Array.prototype.slice.call(document.querySelectorAll('.square'), 0);
-            var symbols = squares.map(function(square) {
-                return square.innerHTML;
-            });
             var winningCombos = [
                 [0, 1, 2],
                 [3, 4, 5],
@@ -71,14 +83,14 @@
                 [0, 4, 8],
                 [2, 4, 6]
             ];
+            var squares = gameState.board;
             return winningCombos.find(function(combo) {
-                if (symbols[combo[0]] == symbols[combo[1]] && symbols[combo[1]] == symbols[combo[2]]) {
-                    return symbols[[combo[0]]];
+                if (squares[combo[0]] == squares[combo[1]] && squares[combo[1]] == squares[combo[2]]) {
+                    return squares[[combo[0]]];
                 } else {
                     return false;
                 }
             });
-            console.log(symbols);
         }
     </script>
 </body>
