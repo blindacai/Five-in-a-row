@@ -1,7 +1,10 @@
-**version 1:** directly write to the DOM
+**version 1:**
+
+ directly write to the DOM
 
 
 **version 2:**
+
 you should not write to dom directly
 
 save the state of the game to some objects
@@ -34,6 +37,7 @@ via props, so that the child components are always in sync with each other and w
 
 
 **Readings**
+
 https://facebook.github.io/react-native/docs/props.html
 
 https://facebook.github.io/react-native/docs/state.html
@@ -47,4 +51,5 @@ So it looks similar to keyword final in Java
 
 
 **Questions**
+
 Why object being immutable is important
