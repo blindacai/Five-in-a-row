@@ -19,16 +19,15 @@ problem: how to deal with the state of your app along with the browser's state (
 
 
 **version 3:**
+
 use a library for the render logic
 
 use react.js
 
 All React components must act like pure functions with respect to their props
 
-There are two types of data that control a component: props and state
-
-props are set by the parent and they are fixed throughout the lifetime of a component
-
+There are two types of data that control a component: props and state.
+props are set by the parent and they are fixed throughout the lifetime of a component.
 For data that is going to change, we have to use state
 
 When you want to aggregate data from multiple children or to have two child components communicate with each other,
