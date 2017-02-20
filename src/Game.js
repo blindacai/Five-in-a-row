@@ -44,6 +44,63 @@ class Board extends Component {
   }
 }
 
+//////// move
+class Move extends Component{
+
+  render(){
+    let text = <li>{this.props.posX}</li>;
+    if(this.props.bold){
+      text = <b>{text}</b>
+    }
+
+    return (
+      <div onClick={() => this.props.onClick()}>{text}</div>
+    );
+  }
+}
+
+
+//////// Moves
+class Moves extends Component{
+  constructor(){
+    super();
+    this.state = {
+      steps: [],
+      bold: false
+    }
+  }
+
+  handle(){
+    this.setState({
+      bold: true
+    })
+  }
+
+  render(){
+    this.setState({
+      steps: this.state.steps.concat([this.props.step])
+    })
+
+    const moves = this.state.steps.map((step, index) => {
+      if(this.state.bold){
+        this.setState({
+          bold: false
+        })
+      }
+
+      return (
+        <Move key={index} posX={step.posX} bold={this.state.bold} onClick={() => this.handle()} />
+      );
+    });
+
+
+    return (
+      <ul>{moves}</ul>
+    );
+  }
+}
+
+
 
 //////// Game
 class Game extends Component {
@@ -54,7 +111,7 @@ class Game extends Component {
         squares: Array(9).fill(null)
       }],
 
-      clickAt: [],
+      clickAt: {},
       stepNumber: 0,
       xIsNext: true  
     };
@@ -65,7 +122,7 @@ class Game extends Component {
     const current = history[this.state.stepNumber];
     const squares = current.squares.slice();     // slice: copy the squares array instead of mutating the existing one
 
-    const clickAt = this.state.clickAt.slice(0, this.state.stepNumber + 1);
+    //const clickAt = this.state.clickAt.slice(0, this.state.stepNumber + 1);
     const index = (i-1)*3 + (j-1);
     
 
@@ -80,7 +137,8 @@ class Game extends Component {
           squares: squares
       }]),
 
-      clickAt: clickAt.concat([{posX: i, posY: j}]),
+      // clickAt: clickAt.concat([{posX: i, posY: j}]),
+      clickAt: {posX: i, posY: j},
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext
     });
@@ -98,8 +156,6 @@ class Game extends Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
-    const clickAt = this.state.clickAt;
-
     let status;
     if(winner){
       status = 'Winner: ' + winner;
@@ -108,7 +164,7 @@ class Game extends Component {
       status = 'Next player: ' + (this.state.xIsNext? 'X' : 'O');
     }
 
-    const moves = history.map((step, move) => {
+    /*const moves = history.map((step, move) => {
       const desc = move? 
         'Move #' + move + ' at ' + '(' + clickAt[move - 1].posX + ',' + clickAt[move - 1].posY + ')':
         'Game Start';
@@ -117,7 +173,7 @@ class Game extends Component {
             <a href='#' onClick={() => this.jumpTo(move)}>{desc}</a>
           </li>  
         );
-    });
+    });*/
 
     return (
       <div className="game">  
@@ -129,7 +185,7 @@ class Game extends Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <Moves step={this.state.clickAt} />
         </div>
       </div>
     );
