@@ -11,6 +11,10 @@ li {
   cursor: pointer;
 }
 
+a {
+  font-size: 20px;
+}
+
 .board-row:after {
   clear: both;
   content: "";

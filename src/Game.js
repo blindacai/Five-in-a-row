@@ -46,9 +46,18 @@ class Board extends Component {
     return (
       <div>
         {this.formatSquare()}
+        <Source></Source>
       </div>
     );
   }
+}
+
+
+//////// Source
+function Source(){
+  return (
+    <a href="https://github.com/blindacai/Tic-Tac-Toe">Source Code</a>
+  );
 }
 
 //////// move
@@ -178,7 +187,7 @@ class Game extends Component {
           <div>{this.getStatus(winner)}</div>
           <Moves moves={this.state.clickAt} onClick={(index) => this.jumpTo(index)}/>
         </div>
-      </div>
+       </div>
     );
   }
 }
