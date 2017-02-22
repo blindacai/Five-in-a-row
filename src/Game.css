@@ -15,6 +15,10 @@ a {
   font-size: 20px;
 }
 
+.amove{
+  font-size: 15px;
+}
+
 .board-row:after {
   clear: both;
   content: "";

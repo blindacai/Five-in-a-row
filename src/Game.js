@@ -70,7 +70,7 @@ function Move(props) {
   else{
     const posX = props.move.posX;
     const posY = props.move.posY;
-    desc = "Move #" + index + " at (" + posX + ", " + posY +  ")";
+    desc = `Move #${index} at (${posX}, ${posY})`;
   }
 
   return (
@@ -98,10 +98,10 @@ class Moves extends Component{
 
   render(){
     const moves = this.props.moves.map((move, index) => {
-      return (<div key={index} className={this.state.selectedItem[index]}>
+      return (<a href="#" key={index} className={this.state.selectedItem[index] + " " + "amove"}>
                 <Move move={move} step={index} onClick={(index) => {this.handleClick(index);
                                                                     this.props.onClick(index)}} />
-              </div>);
+              </a>);
     }); 
 
     return (
