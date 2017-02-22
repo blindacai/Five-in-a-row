@@ -48,13 +48,12 @@ class Board extends Component {
 class Move extends Component{
 
   render(){
-    let text = <li>{this.props.posX}</li>;
-    if(this.props.bold){
-      text = <b>{text}</b>
-    }
+    const posX = this.props.move.posX;
+    const posY = this.props.move.posY;
+    const index = this.props.step;
 
     return (
-      <div onClick={() => this.props.onClick()}>{text}</div>
+      <li onClick={() => this.props.onClick(index)}>Move #{index + 1} at ({posX}, {posY})</li>
     );
   }
 }
@@ -65,37 +64,28 @@ class Moves extends Component{
   constructor(){
     super();
     this.state = {
-      steps: [],
-      bold: false
+      selectedItem: {}
     }
   }
 
-  handle(){
+  handleClick(index){
+    let selected = {};
+    selected[index] = "selected";
     this.setState({
-      bold: true
-    })
+      selectedItem: selected
+    });
   }
 
   render(){
-    this.setState({
-      steps: this.state.steps.concat([this.props.step])
-    })
-
-    const moves = this.state.steps.map((step, index) => {
-      if(this.state.bold){
-        this.setState({
-          bold: false
-        })
-      }
-
-      return (
-        <Move key={index} posX={step.posX} bold={this.state.bold} onClick={() => this.handle()} />
-      );
-    });
-
+    const moves = this.props.moves.map((move, index) => {
+      return <div key={index} className={this.state.selectedItem[index]}>
+                <Move move={move} step={index} onClick={(index) => {this.handleClick(index);
+                                                                    this.props.onClick(index)}} />
+             </div>
+    }); 
 
     return (
-      <ul>{moves}</ul>
+      <ol>{moves}</ol>
     );
   }
 }
@@ -111,7 +101,7 @@ class Game extends Component {
         squares: Array(9).fill(null)
       }],
 
-      clickAt: {},
+      clickAt: [],
       stepNumber: 0,
       xIsNext: true  
     };
@@ -122,7 +112,7 @@ class Game extends Component {
     const current = history[this.state.stepNumber];
     const squares = current.squares.slice();     // slice: copy the squares array instead of mutating the existing one
 
-    //const clickAt = this.state.clickAt.slice(0, this.state.stepNumber + 1);
+    const clickAt = this.state.clickAt.slice(0, this.state.stepNumber);
     const index = (i-1)*3 + (j-1);
     
 
@@ -137,8 +127,7 @@ class Game extends Component {
           squares: squares
       }]),
 
-      // clickAt: clickAt.concat([{posX: i, posY: j}]),
-      clickAt: {posX: i, posY: j},
+      clickAt: clickAt.concat([{posX: i, posY: j}]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext
     });
@@ -146,7 +135,7 @@ class Game extends Component {
 
   jumpTo(step){
     this.setState({
-      stepNumber: step,
+      stepNumber: step + 1,
       xIsNext: (step % 2)? false : true 
     })
   }
@@ -185,7 +174,7 @@ class Game extends Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <Moves step={this.state.clickAt} />
+          <Moves moves={this.state.clickAt} onClick={(index) => this.jumpTo(index)}/>
         </div>
       </div>
     );
