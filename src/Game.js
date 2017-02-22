@@ -60,7 +60,7 @@ function Source(){
   );
 }
 
-//////// move
+//////// Move
 function Move(props) {
   const index = props.step;
   let desc;
