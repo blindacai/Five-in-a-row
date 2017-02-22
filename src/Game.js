@@ -22,28 +22,6 @@ class Board extends Component {
     return <Square key={index} value={this.props.squares[index]} onClick={() => this.props.onClick(i, j)} />;
   }
 
-  /*render() {
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(1,1)}
-          {this.renderSquare(1,2)}
-          {this.renderSquare(1,3)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(2,1)}
-          {this.renderSquare(2,2)}
-          {this.renderSquare(2,3)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3,1)}
-          {this.renderSquare(3,2)}
-          {this.renderSquare(3,3)}
-        </div>
-      </div>
-    );
-  }*/
-
   getSquare(row){
     let trio = [];
     for(let i = 1; i < 4; i++){
@@ -172,11 +150,7 @@ class Game extends Component {
     })
   }
 
-  render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
-
+  getStatus(winner){
     let status;
     if(winner){
       status = 'Winner: ' + winner;
@@ -184,6 +158,13 @@ class Game extends Component {
     else{
       status = 'Next player: ' + (this.state.xIsNext? 'X' : 'O');
     }
+    return status;
+  }
+
+  render() {
+    const history = this.state.history;
+    const current = history[this.state.stepNumber];
+    const winner = calculateWinner(current.squares);
 
     return (
       <div className="game">  
@@ -194,7 +175,7 @@ class Game extends Component {
           />
         </div>
         <div className="game-info">
-          <div>{status}</div>
+          <div>{this.getStatus(winner)}</div>
           <Moves moves={this.state.clickAt} onClick={(index) => this.jumpTo(index)}/>
         </div>
       </div>
