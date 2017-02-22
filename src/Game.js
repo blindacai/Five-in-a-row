@@ -18,10 +18,11 @@ function Square(props){
 class Board extends Component {
 
   renderSquare(i, j) {
-    return <Square value={this.props.squares[(i-1)*3 + (j-1)]} onClick={() => this.props.onClick(i, j)} />;
+    const index = (i-1)*3 + (j-1);
+    return <Square key={index} value={this.props.squares[index]} onClick={() => this.props.onClick(i, j)} />;
   }
 
-  render() {
+  /*render() {
     return (
       <div>
         <div className="board-row">
@@ -39,6 +40,34 @@ class Board extends Component {
           {this.renderSquare(3,2)}
           {this.renderSquare(3,3)}
         </div>
+      </div>
+    );
+  }*/
+
+  getSquare(row){
+    let trio = [];
+    for(let i = 1; i < 4; i++){
+      trio = trio.concat(this.renderSquare(row, i));
+    }
+    return trio;
+  }
+
+  formatSquare(){
+    let allSquares = [];
+    for(let i = 1; i < 4; i++){
+      allSquares = allSquares.concat(
+        <div key={i} className="board-row">
+          {this.getSquare(i)}
+        </div>
+      );
+    }
+    return allSquares;
+  }
+
+  render(){
+    return (
+      <div>
+        {this.formatSquare()}
       </div>
     );
   }
