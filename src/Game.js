@@ -7,7 +7,7 @@ import './Board.css';
 // stateless components that only consist of a render method
 function Square(props){
   return (
-    <button className="square" onClick={() => props.onClick()}>
+    <button className={props.winner + " square"} onClick={() => props.onClick()}>
       {props.value}
     </button>
   );
@@ -16,10 +16,19 @@ function Square(props){
 
 //////// Board
 class Board extends Component {
+  constructor(){
+    super();
+    this.state = {
+      triowin:{}
+    }
+  }
 
   renderSquare(i, j) {
     const index = (i-1)*3 + (j-1);
-    return <Square key={index} value={this.props.squares[index]} onClick={() => this.props.onClick(i, j)} />;
+    this.formatWinner(this.props.triopos);
+    return <Square key={index} value={this.props.squares[index]}
+                               winner={this.state.triowin[index]}
+                               onClick={() => this.props.onClick(i, j)} />;
   }
 
   getSquare(row){
@@ -40,6 +49,21 @@ class Board extends Component {
       );
     }
     return allSquares;
+  }
+
+  formatWinner(triopos){
+    if(!triopos){
+      return;
+    }
+
+    let item = {};
+    for(let i = 0; i < 3; i++){
+      item[triopos[i]] = "winner";
+    }
+
+    this.setState({
+      triowin: item
+    })
   }
 
   render(){
@@ -98,7 +122,7 @@ class Moves extends Component{
 
   render(){
     const moves = this.props.moves.map((move, index) => {
-      return (<a href="#" key={index} className={this.state.selectedItem[index] + " " + "amove"}>
+      return (<a href="#" key={index} className={this.state.selectedItem[index] + " amove"}>
                 <Move move={move} step={index} onClick={(index) => {this.handleClick(index);
                                                                     this.props.onClick(index)}} />
               </a>);
@@ -134,7 +158,6 @@ class Game extends Component {
     const clickAt = this.state.clickAt.slice(0, this.state.stepNumber + 1);
     const index = (i-1)*3 + (j-1);
     
-
     if (calculateWinner(squares) || squares[index]) {
       return;
     }
@@ -173,13 +196,15 @@ class Game extends Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const triopos = calculateWinner(current.squares);
+    const winner = triopos? current.squares[triopos[0]] : null;
 
     return (
       <div className="game">  
         <div className="game-board"> 
           <Board 
             squares={current.squares}
+            triopos={triopos}
             onClick={(i, j) => this.handleClick(i, j)}
           />
         </div>
@@ -211,7 +236,7 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return [a, b, c];
     }
   }
   return null;

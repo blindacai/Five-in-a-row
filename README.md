@@ -61,12 +61,12 @@ Below are some notes from the two sources
     via props, so that the child components are always in sync with each other and with the parent.
 
 #### Readings:
-{[const, let, var in JavaScript](https://medium.com/javascript-scene/javascript-es6-var-let-or-const-ba58b8dcde75#.ifdizjj7u)}
+{[Compare const, let, var in JavaScript](https://medium.com/javascript-scene/javascript-es6-var-let-or-const-ba58b8dcde75#.ifdizjj7u)}
 
 const means that the identifier(variable in this case) can’t be reassigned (it's read only),
 but the object the identifier refer to can be mutable
 
-So it looks similar to keyword final in Java
+I feel it is similar to the keyword final in Java
 
 #### Questions
 Why object being immutable is important?
