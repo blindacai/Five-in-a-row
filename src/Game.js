@@ -132,12 +132,26 @@ class Moves extends Component{
                 <Move move={move} step={index} onClick={(index) => {this.handleClick(index);
                                                                     this.props.onClick(index)}} />
               </a>);
-    }); 
+    });
+
+    if(!this.props.buttonState){
+      moves.reverse();
+    }
 
     return (
       <ol>{moves}</ol>
     );
   }
+}
+
+
+//////// Toggle
+function Button(props){
+  return (
+    <button type="button" onClick={() => props.onClick()}>
+      {props.buttonState}
+    </button>
+  );
 }
 
 
@@ -152,7 +166,8 @@ class Game extends Component {
 
       clickAt: ["Game Start"],
       stepNumber: 0,
-      xIsNext: true  
+      xIsNext: true,
+      buttonState: true
     };
   }  
 
@@ -199,11 +214,18 @@ class Game extends Component {
     return status;
   }
 
+  flipState(){
+    this.setState({
+      buttonState: !this.state.buttonState
+    })
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const triopos = calculateWinner(current.squares);
     const winner = triopos? current.squares[triopos[0]] : null;
+    const buttonText = this.state.buttonState? "Increase" : "Decrease"
 
     return (
       <div className="game">  
@@ -216,7 +238,11 @@ class Game extends Component {
         </div>
         <div className="game-info">
           <div>{this.getStatus(winner)}</div>
-          <Moves moves={this.state.clickAt} onClick={(index) => this.jumpTo(index)}/>
+          <br />
+          <Button buttonState={buttonText} onClick={() => this.flipState()} />
+          <Moves moves={this.state.clickAt} 
+                 buttonState={this.state.buttonState}
+                 onClick={(index) => this.jumpTo(index)}/>
         </div>
        </div>
     );

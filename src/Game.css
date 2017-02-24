@@ -64,3 +64,14 @@ a {
 .selected{
   font-weight: bold;
 }
+
+button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    padding: 8px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    cursor: pointer;
+}
