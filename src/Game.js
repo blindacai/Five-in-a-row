@@ -23,9 +23,12 @@ class Board extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    this.formatWinner(nextProps.triopos)
+  }
+
   renderSquare(i, j) {
     const index = (i-1)*3 + (j-1);
-    this.formatWinner(this.props.triopos);
     return <Square key={index} value={this.props.squares[index]}
                                winner={this.state.triowin[index]}
                                onClick={() => this.props.onClick(i, j)} />;
@@ -53,6 +56,9 @@ class Board extends Component {
 
   formatWinner(triopos){
     if(!triopos){
+      this.setState({
+        triowin: {}
+      })
       return;
     }
 
