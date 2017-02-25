@@ -8,11 +8,11 @@
 }
 
 .square {
-    height: 200px;
-    width: 200px;
+    height: 42px;
+    width: 42px;
     box-sizing: border-box;
-    border: 5px solid black;
-    font-size: 5em;
+    border: 1px solid black;
+    font-size: 1.6em;
     display: flex;
     justify-content: center;
     align-items: center;

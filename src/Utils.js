@@ -1,6 +1,6 @@
 let Utils = {
-    column: 5,
-    causewin: 4
+    column: 15,
+    causewin: 5
 }
 
 export default Utils;

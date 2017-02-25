@@ -12,7 +12,7 @@ li {
 }
 
 a {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .amove{
@@ -73,6 +73,6 @@ button {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
 }
