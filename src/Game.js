@@ -308,18 +308,19 @@ function linesForBoard(start){
   }
 
   lines = lines.concat([winCrossOne(start)], 
-                       [winCrossTwo(start + 2)]);
+                       [winCrossTwo(start + Utils.causewin - 1)]);
 
   return lines;
 }
 
 function createLines(){
   const column = Utils.column;
+  const loop_num = column - Utils.causewin + 1;
   let lines = [];
 
   let start = 0;
-  for(let i = 0; i < column - 2; i++){
-    for(let j = start; j < start + column - 2; j++){
+  for(let i = 0; i < loop_num; i++){
+    for(let j = start; j < start + loop_num; j++){
       lines = lines.concat(linesForBoard(j));
     }
     start += column;
