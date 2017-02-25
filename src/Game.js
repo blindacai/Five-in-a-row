@@ -255,17 +255,44 @@ export default Game;
 
 // ========================================
 
+function linesForBoard(start, num_column){
+  let lines = [];
+
+  let row = start;
+  for(let i = 0; i < 3; i++){
+    lines = lines.concat([[row, row + 1, row + 2]]);
+    row += num_column;
+  }
+
+  let column = start;
+  for(let i = 0; i < 3; i++){
+    lines = lines.concat([[column, column + num_column, column + num_column * 2]]);
+    column += 1;
+  }
+
+  lines = lines.concat([[start, start + num_column + 1, start + (num_column + 1)*2]], 
+                       [[start + 2, start + 2 + (num_column - 1), start + 2 + (num_column - 1)*2]]);
+
+  return lines;
+}
+
+function createLines(column){
+  let lines = [];
+
+  let start = 0;
+  for(let i = 0; i < column - 2; i++){
+    for(let j = start; j < start + column - 2; j++){
+      lines = lines.concat(linesForBoard(j, column));
+    }
+    start += column;
+  }
+
+  return lines;
+}
+
 function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+  const lines = createLines(Utils.column);
+
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
