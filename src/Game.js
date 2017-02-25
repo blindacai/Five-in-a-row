@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Game.css';
 import './Board.css';
 
+import Utils from './Utils';
 
 //////// Square
 // stateless components that only consist of a render method
@@ -28,7 +29,7 @@ class Board extends Component {
   }
 
   renderSquare(i, j) {
-    const index = (i-1)*3 + (j-1);
+    const index = (i-1) * Utils.column + (j-1);
     return <Square key={index} value={this.props.squares[index]}
                                winner={this.state.triowin[index]}
                                onClick={() => this.props.onClick(i, j)} />;
@@ -36,7 +37,7 @@ class Board extends Component {
 
   getSquare(row){
     let trio = [];
-    for(let i = 1; i < 4; i++){
+    for(let i = 1; i < Utils.column + 1; i++){
       trio = trio.concat(this.renderSquare(row, i));
     }
     return trio;
@@ -44,7 +45,7 @@ class Board extends Component {
 
   formatSquare(){
     let allSquares = [];
-    for(let i = 1; i < 4; i++){
+    for(let i = 1; i < Utils.column + 1; i++){
       allSquares = allSquares.concat(
         <div key={i} className="board-row">
           {this.getSquare(i)}
@@ -63,7 +64,7 @@ class Board extends Component {
     }
 
     let item = {};
-    for(let i = 0; i < 3; i++){
+    for(let i = 0; i < Utils.column; i++){
       item[triopos[i]] = "winner";
     }
 
@@ -161,7 +162,7 @@ class Game extends Component {
     super();
     this.state = {
       history: [{
-        squares: Array(9).fill(null)
+        squares: Array(Math.pow(Utils.column, 2)).fill(null)
       }],
 
       clickAt: ["Game Start"],
@@ -177,7 +178,7 @@ class Game extends Component {
     const squares = current.squares.slice();     // slice: copy the squares array instead of mutating the existing one
 
     const clickAt = this.state.clickAt.slice(0, this.state.stepNumber + 1);
-    const index = (i-1)*3 + (j-1);
+    const index = (i-1) * Utils.column + (j-1);
     
     if (calculateWinner(squares) || squares[index]) {
       return;
