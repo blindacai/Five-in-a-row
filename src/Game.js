@@ -290,14 +290,13 @@ class Game extends Component {
 
         <div className="game-info">
           <h2>{this.getStatus(winner)}</h2>
-          <br />
           <Order buttonState={buttonText} onClick={() => this.flipState()} />
           <Moves moves={this.state.clickAt} 
                  buttonState={this.state.buttonState}
                  onClick={(index) => this.jumpTo(index)} />
         </div>
 
-        <div className="switch-info">
+        <div className="absolute">
           <h2>[?] in a row</h2>
           <WinPiece onClick={() => this.startOver()} />
         </div>  
