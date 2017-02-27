@@ -15,6 +15,10 @@ a {
   font-size: 18px;
 }
 
+span{
+  font-size: 20px;
+}
+
 .amove{
   font-size: 15px;
 }
@@ -61,13 +65,17 @@ a {
   margin-left: 20px;
 }
 
+.switch-info {
+  margin-left: 150px;
+}
+
 .selected{
   font-weight: bold;
   color: black;
 }
 
-button {
-    background-color: #4CAF50; /* Green */
+.button {
+    background-color: #80cd92;; /* Green */
     border: none;
     padding: 8px 20px;
     text-align: center;
@@ -76,3 +84,5 @@ button {
     font-size: 16px;
     cursor: pointer;
 }
+
+.button:hover {background-color: #4CAF50; }

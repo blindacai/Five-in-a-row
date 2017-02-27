@@ -147,12 +147,55 @@ class Moves extends Component{
 
 
 //////// Toggle
-function Button(props){
+function Order(props){
   return (
-    <button type="button" onClick={() => props.onClick()}>
+    <button className="button" onClick={() => props.onClick()}>
       {props.buttonState}
     </button>
   );
+}
+
+
+//////// WinValue
+function WinValue(props){
+  return (
+    <span>  {props.value}  </span>
+  );
+}
+
+
+//////// WinPiece
+class WinPiece extends Component{
+
+  checkCeiling(){
+    if(Utils.causewin > 5){
+      return;
+    }
+    else{
+      Utils.causewin += 1; 
+      this.props.onClick();
+    }
+  }
+
+  checkFloor(){
+    if(Utils.causewin < 4){
+      return;
+    }
+    else{
+      Utils.causewin -= 1;
+      this.props.onClick();
+    }
+  }
+
+  render(){
+    return (
+      <div>
+        <button className="button" onClick={() => this.checkFloor()}>-</button>
+          <WinValue value={Utils.causewin}></WinValue>
+        <button className="button" onClick={() => this.checkCeiling()}>+</button>
+      </div>
+    );
+  }
 }
 
 
@@ -221,6 +264,13 @@ class Game extends Component {
     })
   }
 
+  startOver(){
+    this.jumpTo(0);
+    this.setState({
+      clickAt: ["Game Start"]
+    });
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -237,14 +287,20 @@ class Game extends Component {
             onClick={(i, j) => this.handleClick(i, j)}
           />
         </div>
+
         <div className="game-info">
-          <div>{this.getStatus(winner)}</div>
+          <h2>{this.getStatus(winner)}</h2>
           <br />
-          <Button buttonState={buttonText} onClick={() => this.flipState()} />
+          <Order buttonState={buttonText} onClick={() => this.flipState()} />
           <Moves moves={this.state.clickAt} 
                  buttonState={this.state.buttonState}
-                 onClick={(index) => this.jumpTo(index)}/>
+                 onClick={(index) => this.jumpTo(index)} />
         </div>
+
+        <div className="switch-info">
+          <h2>[?] in a row</h2>
+          <WinPiece onClick={() => this.startOver()} />
+        </div>  
        </div>
     );
   }
