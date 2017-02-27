@@ -69,9 +69,13 @@ span{
 
 .absolute {
   position: absolute;
-  top: 20px;
-  left: 950px;
+  top: 0px;
+  left: 350px;
   width: 300px;
+}
+
+.relative{
+  position: relative;
 }
 
 .selected{

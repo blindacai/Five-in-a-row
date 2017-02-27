@@ -189,7 +189,8 @@ class WinPiece extends Component{
 
   render(){
     return (
-      <div>
+      <div className="absolute">
+        <h2>[?] in a row</h2>
         <button className="button" onClick={() => this.checkFloor()}>-</button>
           <WinValue value={Utils.causewin}></WinValue>
         <button className="button" onClick={() => this.checkCeiling()}>+</button>
@@ -288,19 +289,18 @@ class Game extends Component {
           />
         </div>
 
-        <div className="game-info">
-          <h2>{this.getStatus(winner)}</h2>
-          <Order buttonState={buttonText} onClick={() => this.flipState()} />
-          <Moves moves={this.state.clickAt} 
-                 buttonState={this.state.buttonState}
-                 onClick={(index) => this.jumpTo(index)} />
-        </div>
+        <div className="relative">
+          <div className="game-info">
+            <h2>{this.getStatus(winner)}</h2>
+            <Order buttonState={buttonText} onClick={() => this.flipState()} />
+            <Moves moves={this.state.clickAt} 
+                  buttonState={this.state.buttonState}
+                  onClick={(index) => this.jumpTo(index)} />
+          </div>
 
-        <div className="absolute">
-          <h2>[?] in a row</h2>
           <WinPiece onClick={() => this.startOver()} />
-        </div>  
-       </div>
+        </div>
+      </div>
     );
   }
 }
