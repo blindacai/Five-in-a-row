@@ -157,72 +157,60 @@ function Order(props){
 }
 
 
-//////// WinPiece
-class WinPiece extends Component{
-
-  checkCeiling(){
-    if(Utils.causewin > 5){
-      return;
-    }
-    else{
-      Utils.causewin += 1; 
-      this.props.onClick();
+//////// PlusMinus
+class PlusMinus extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      value: props.value
     }
   }
 
-  checkFloor(){
-    if(Utils.causewin < 4){
+  checkCeiling(rangeC){
+    if(this.state.value > rangeC - 1){
       return;
     }
     else{
-      Utils.causewin -= 1;
-      this.props.onClick();
+      this.setState({
+        value: this.state.value + 1
+      });
+
+      this.checkType();
     }
   }
+
+  checkFloor(rangeF){
+    if(this.state.value < rangeF + 1){
+      return;
+    }
+    else{
+      this.setState({
+        value: this.state.value - 1
+      });
+
+      this.checkType();
+    }
+  }
+
+  checkType(){
+    if(this.props.type === "causewin"){
+      Utils.causewin = this.state.value;
+    }
+    else{
+      Utils.column = this.state.value;
+    }
+  }
+
 
   render(){
     return (
-      <div className="absolute first">
-        <h2>[?] in a row</h2>
-        <button className="button" onClick={() => this.checkFloor()}>-</button>
-          <span>  {Utils.causewin}  </span>
-        <button className="button" onClick={() => this.checkCeiling()}>+</button>
-      </div>
-    );
-  }
-}
-
-
-//////// Column
-class ColumnSize extends Component{
-
-  checkCeiling(){
-    if(Utils.column > 24){
-      return;
-    }
-    else{
-      Utils.column += 1; 
-      this.props.onClick();
-    }
-  }
-
-  checkFloor(){
-    if(Utils.column < 11){
-      return;
-    }
-    else{
-      Utils.column -= 1;
-      this.props.onClick();
-    }
-  }
-
-  render(){
-    return (
-      <div className="absolute second">
-        <h2>Board Size?</h2>
-        <button className="button" onClick={() => this.checkFloor()}>-</button>
-          <span>  {Utils.column}  </span>
-        <button className="button" onClick={() => this.checkCeiling()}>+</button>
+      <div className={"absolute " + this.props.css}>
+        <h2>{this.props.title}</h2>
+        <button className="button" onClick={() => {this.checkFloor(this.props.rangeF);
+                                                   this.props.onClick()}}>-</button>
+          <span>  {this.props.value}  </span>
+        <button className="button" onClick={() => {this.checkCeiling(this.props.rangeC);
+                                                   this.props.onClick()}}>+</button>
       </div>
     );
   }
@@ -328,8 +316,21 @@ class Game extends Component {
                   onClick={(index) => this.jumpTo(index)} />
           </div>
           
-          <WinPiece onClick={() => this.startOver()} />
-          <ColumnSize onClick={() => this.startOver()} />
+          <PlusMinus title={"[?] in a row"} 
+                     css={"first"}
+                     value={Utils.causewin}
+                     rangeC={6}
+                     rangeF={3}
+                     type={"causewin"}
+                     onClick={() => this.startOver()} />
+
+          <PlusMinus title={"Board Size?"} 
+                     css={"second"}
+                     value={Utils.column}
+                     rangeC={25}
+                     rangeF={10}
+                     type={"column"}
+                     onClick={() => {this.startOver()}} />          
         </div>
       </div>
     );

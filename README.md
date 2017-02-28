@@ -1,4 +1,4 @@
-# tic tac toe -  sample React web app
+# [?] in a row - web
 #### Stuff used to make this:
 * node + npm
 * {[create-react-app](https://github.com/facebookincubator/create-react-app)} for app structure
@@ -18,7 +18,7 @@
 * ```heroku open```
 
 #### Notes and Resource:
-Mainly based on 
+Based on 
 {[Building React From Scratch](https://www.youtube.com/watch?v=pTHCwUdGFkc)} Youtube tutorial and 
 {[Intro to React](https://facebook.github.io/react/tutorial/tutorial.html)} tutorial.
 Below are some notes from the two sources
