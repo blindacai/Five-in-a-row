@@ -157,60 +157,57 @@ function Order(props){
 }
 
 
-//////// PlusMinus
-class PlusMinus extends Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      value: props.value
-    }
-  }
+//////// Decrease
+class Decrease extends Component{
 
-  checkCeiling(rangeC){
-    if(this.state.value > rangeC - 1){
-      return;
-    }
-    else{
-      this.setState({
-        value: this.state.value + 1
-      });
-
-      this.checkType();
-    }
-  }
-
-  checkFloor(rangeF){
-    if(this.state.value < rangeF + 1){
-      return;
-    }
-    else{
-      this.setState({
-        value: this.state.value - 1
-      });
-
-      this.checkType();
-    }
-  }
-
-  checkType(){
+  updateUtils(){
     if(this.props.type === "causewin"){
-      Utils.causewin = this.state.value;
+      Utils.causewin = checkFloor(Utils.causewin, 3);
     }
     else{
-      Utils.column = this.state.value;
+      Utils.column = checkFloor(Utils.column, 10);
     }
   }
-
 
   render(){
     return (
+      <button className="button" onClick={() => {this.updateUtils(); this.props.onClick()}}>-</button>
+    );
+  }
+}
+
+
+//////// Increase
+class Increase extends Component{
+
+  updateUtils(){
+    if(this.props.type === "causewin"){
+      Utils.causewin = checkCeiling(Utils.causewin, 6);
+    }
+    else{
+      Utils.column = checkCeiling(Utils.column, 25);
+    }
+  }
+
+  render(){
+    return (
+      <button className="button" onClick={() => {this.updateUtils(); this.props.onClick()}}>+</button>
+    );
+  }
+}
+
+
+//////// PlusMinus
+class PlusMinus extends Component{
+  render(){
+    const value = (this.props.type === "causewin")? Utils.causewin : Utils.column;
+
+    return (
       <div className={"absolute " + this.props.css}>
         <h2>{this.props.title}</h2>
-        <button className="button" onClick={() => {this.checkFloor(this.props.rangeF);
-                                                   this.props.onClick()}}>-</button>
-          <span>  {this.props.value}  </span>
-        <button className="button" onClick={() => {this.checkCeiling(this.props.rangeC);
-                                                   this.props.onClick()}}>+</button>
+        <Decrease type={this.props.type} onClick={() => this.props.onClick()} />
+        <span>  {value}  </span>
+        <Increase type={this.props.type} onClick={() => this.props.onClick()} />
       </div>
     );
   }
@@ -318,17 +315,11 @@ class Game extends Component {
           
           <PlusMinus title={"[?] in a row"} 
                      css={"first"}
-                     value={Utils.causewin}
-                     rangeC={6}
-                     rangeF={3}
                      type={"causewin"}
                      onClick={() => this.startOver()} />
 
           <PlusMinus title={"Board Size?"} 
                      css={"second"}
-                     value={Utils.column}
-                     rangeC={25}
-                     rangeF={10}
                      type={"column"}
                      onClick={() => {this.startOver()}} />          
         </div>
@@ -341,6 +332,14 @@ export default Game;
 
 
 // ========================================
+
+function checkCeiling(target, threshold){
+  return (target < threshold)? (target + 1) : target;
+}
+
+function checkFloor(target, threshold){
+  return (target > threshold)? (target - 1) : target;
+}
 
 function winRow(start){
   let thewin = [];
