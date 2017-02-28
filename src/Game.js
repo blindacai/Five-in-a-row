@@ -91,6 +91,7 @@ function Source(){
   );
 }
 
+
 //////// Move
 function Move(props) {
   const index = props.step;
@@ -156,14 +157,6 @@ function Order(props){
 }
 
 
-//////// WinValue
-function WinValue(props){
-  return (
-    <span>  {props.value}  </span>
-  );
-}
-
-
 //////// WinPiece
 class WinPiece extends Component{
 
@@ -189,10 +182,46 @@ class WinPiece extends Component{
 
   render(){
     return (
-      <div className="absolute">
+      <div className="absolute first">
         <h2>[?] in a row</h2>
         <button className="button" onClick={() => this.checkFloor()}>-</button>
-          <WinValue value={Utils.causewin}></WinValue>
+          <span>  {Utils.causewin}  </span>
+        <button className="button" onClick={() => this.checkCeiling()}>+</button>
+      </div>
+    );
+  }
+}
+
+
+//////// Column
+class ColumnSize extends Component{
+
+  checkCeiling(){
+    if(Utils.column > 24){
+      return;
+    }
+    else{
+      Utils.column += 1; 
+      this.props.onClick();
+    }
+  }
+
+  checkFloor(){
+    if(Utils.column < 11){
+      return;
+    }
+    else{
+      Utils.column -= 1;
+      this.props.onClick();
+    }
+  }
+
+  render(){
+    return (
+      <div className="absolute second">
+        <h2>Board Size?</h2>
+        <button className="button" onClick={() => this.checkFloor()}>-</button>
+          <span>  {Utils.column}  </span>
         <button className="button" onClick={() => this.checkCeiling()}>+</button>
       </div>
     );
@@ -272,6 +301,7 @@ class Game extends Component {
     });
   }
 
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -297,8 +327,9 @@ class Game extends Component {
                   buttonState={this.state.buttonState}
                   onClick={(index) => this.jumpTo(index)} />
           </div>
-
+          
           <WinPiece onClick={() => this.startOver()} />
+          <ColumnSize onClick={() => this.startOver()} />
         </div>
       </div>
     );

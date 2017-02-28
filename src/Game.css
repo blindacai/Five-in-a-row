@@ -69,9 +69,17 @@ span{
 
 .absolute {
   position: absolute;
-  top: 0px;
+
   left: 350px;
   width: 300px;
+}
+
+.first{
+  top: 0px;
+}
+
+.second{
+  top: 180px;
 }
 
 .relative{
