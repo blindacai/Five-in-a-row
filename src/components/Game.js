@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './Game.css';
-import './Board.css';
+import '../styles/Game.css';
+import '../styles/Board.css';
 
 import Utils from './Utils';
 
