@@ -3,6 +3,7 @@ import '../styles/Game.css';
 import '../styles/Board.css';
 
 import Utils from './Utils';
+import * as calculate from './calculate';
 
 //////// Square
 // stateless components that only consist of a render method
@@ -238,7 +239,7 @@ class Game extends Component {
     const clickAt = this.state.clickAt.slice(0, this.state.stepNumber + 1);
     const index = (i-1) * Utils.column + (j-1);
     
-    if (calculateWinner(squares) || squares[index]) {
+    if (calculate.calculateWinner(squares) || squares[index]) {
       return;
     }
 
@@ -290,7 +291,7 @@ class Game extends Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const triopos = calculateWinner(current.squares);
+    const triopos = calculate.calculateWinner(current.squares);
     const winner = triopos? current.squares[triopos[0]] : null;
     const buttonText = this.state.buttonState? "Decrease" : "Increase"
 
@@ -339,102 +340,4 @@ function checkCeiling(target, threshold){
 
 function checkFloor(target, threshold){
   return (target > threshold)? (target - 1) : target;
-}
-
-function winRow(start){
-  let thewin = [];
-
-  for(let i = 0; i < Utils.causewin; i++){
-    thewin = thewin.concat([start + i]);
-  }
-  return thewin;
-}
-
-function winColumn(start){
-  let thewin = [];
-
-  for(let i = 0; i < Utils.causewin; i++){
-    thewin = thewin.concat([start + Utils.column * i]);
-  }
-  return thewin;
-}
-
-function winCrossOne(start){
-  let thewin = [];
-
-  for(let i = 0; i < Utils.causewin; i++){
-    thewin = thewin.concat([start + (Utils.column + 1) * i]);
-  }
-  return thewin;
-}
-
-function winCrossTwo(start){
-  let thewin = [];
-
-  for(let i = 0; i < Utils.causewin; i++){
-    thewin = thewin.concat([start + (Utils.column - 1) * i]);
-  }
-  return thewin;
-}
-
-function linesForBoard(start){
-  const num_column = Utils.column;
-  let lines = [];
-
-  let row = start;
-  for(let i = 0; i < Utils.causewin; i++){
-    lines = lines.concat( [winRow(row)] );
-    row += num_column;
-  }
-
-  let column = start;
-  for(let i = 0; i < Utils.causewin; i++){
-    lines = lines.concat( [winColumn(column)] );
-    column += 1;
-  }
-
-  lines = lines.concat([winCrossOne(start)], 
-                       [winCrossTwo(start + Utils.causewin - 1)]);
-
-  return lines;
-}
-
-function createLines(){
-  const column = Utils.column;
-  const loop_num = column - Utils.causewin + 1;
-  let lines = [];
-
-  let start = 0;
-  for(let i = 0; i < loop_num; i++){
-    for(let j = start; j < start + loop_num; j++){
-      lines = lines.concat(linesForBoard(j));
-    }
-    start += column;
-  }
-  return lines;
-}
-
-function checkWin(squares, line){
-  const first = squares[line[0]];
-
-  if(!first){
-    return false;
-  }
-  for(let i = 1; i < line.length; i++){
-    if(first !== squares[line[i]]){
-      return false;
-    }
-  }
-  return true;
-}
-
-function calculateWinner(squares) {
-  const lines = createLines();
-
-  for (let i = 0; i < lines.length; i++) {
-    if(checkWin(squares, lines[i])){
-      return lines[i];
-    }
-  }
-  return null;
 }
