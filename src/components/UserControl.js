@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Utils from './Utils';
 
-//////// Decrease
+// return: a minus button
 class Decrease extends Component{
 
   updateUtils(){
@@ -21,8 +21,7 @@ class Decrease extends Component{
   }
 }
 
-
-//////// Increase
+// return: an increase button
 class Increase extends Component{
 
   updateUtils(){
@@ -42,7 +41,10 @@ class Increase extends Component{
 }
 
 
-//////// PlusMinus
+/*
+  return: one user-controlled feature of the game
+  eg: choose the size of the board
+*/
 class PlusMinus extends Component{
   render(){
     const value = (this.props.type === "causewin")? Utils.causewin : Utils.column;

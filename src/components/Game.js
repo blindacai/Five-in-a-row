@@ -3,10 +3,10 @@ import '../styles/Game.css';
 import '../styles/Board.css';
 
 import Utils from './Utils';
-import * as calculate from './calculate';
+import * as calculate from './CalculateWinner';
 import Board from './Board';
 import Moves from './Moves';
-import PlusMinus from './Toggle';
+import PlusMinus from './UserControl';
 
 //////// Game
 class Game extends Component {
@@ -110,12 +110,13 @@ class Game extends Component {
           <PlusMinus title={"[?] in a row"} 
                      css={"first"}
                      type={"causewin"}
-                     onClick={() => this.startOver()} />
-
+                     onClick={() => this.startOver()}
+          />
           <PlusMinus title={"Board Size?"} 
                      css={"second"}
                      type={"column"}
-                     onClick={() => {this.startOver()}} />          
+                     onClick={() => {this.startOver()}}
+          />          
         </div>
       </div>
     );
