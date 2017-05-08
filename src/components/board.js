@@ -23,8 +23,10 @@ class Board extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    this.formatWinner(nextProps.triopos)
+    console.log("in will receive " + this.props.test + "\n");
+    this.formatWinner(this.props.triopos)
   }
+
 
   renderSquare(i, j) {
     const index = (i-1) * Utils.column + (j-1);
@@ -72,6 +74,7 @@ class Board extends Component {
   }
 
   render(){
+    console.log("in board render " + this.props.test + "\n");
     return (
       <div>
         {this.formatSquare()}

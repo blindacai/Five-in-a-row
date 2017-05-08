@@ -20,7 +20,9 @@ class Game extends Component {
       clickAt: ["Game Start"],
       stepNumber: 0,
       xIsNext: true,
-      buttonState: true
+      buttonState: true,
+
+      test: 0
     };
   }  
 
@@ -45,7 +47,9 @@ class Game extends Component {
 
       clickAt: clickAt.concat([{posX: i, posY: j}]),
       stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
+      xIsNext: !this.state.xIsNext,
+
+      test: this.state.test + 1
     });
   }
 
@@ -82,11 +86,14 @@ class Game extends Component {
 
 
   render() {
+    console.log("in game render \n");
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const triopos = calculate.calculateWinner(current.squares);
     const winner = triopos? current.squares[triopos[0]] : null;
     const buttonText = this.state.buttonState? "Decrease" : "Increase";
+
+    const test = this.state.test;
 
     return (
       <div className="game">  
@@ -94,6 +101,7 @@ class Game extends Component {
           <Board 
             squares={current.squares}
             triopos={triopos}
+            test={test}
             onClick={(i, j) => this.handleClick(i, j)}
           />
         </div>
