@@ -2,79 +2,106 @@ import React, { Component } from 'react';
 
 import Utils from './Utils';
 
-//////// Square
+// return: a square of the board
 // stateless components that only consist of a render method
 function Square(props){
   return (
-    <button className={props.winner + " square"} onClick={() => props.onClick()}>
+    <button className={props.winner_css + " square"} onClick={() => props.onClick()}>
       {props.value}
     </button>
   );
 }
 
 
-//////// Board
+// return: the current state of the game board
 class Board extends Component {
   constructor(){
     super();
     this.state = {
-      triowin:{}
+      winpieces:{}
     }
   }
 
+
+  /* 
+    pass the winpieces to highlight
+    this method will be called before render
+    since the state of a component cannot be updated in render
+    or it will cause infinite loop
+    because render is based on the current state
+  */
   componentWillReceiveProps(nextProps){
-    console.log("in will receive " + this.props.test + "\n");
-    this.formatWinner(this.props.triopos)
+    this.formatWinner(nextProps.winpieces_b);
   }
 
 
-  renderSquare(i, j) {
-    const index = (i-1) * Utils.column + (j-1);
+  /*
+    argv: (row, column), the coordinate in the board
+    return: one rendered square of the board
+  */
+  renderSquare(row, column) {
+    const index = (row-1) * Utils.column + (column-1);
     return <Square key={index} value={this.props.squares[index]}
-                               winner={this.state.triowin[index]}
-                               onClick={() => this.props.onClick(i, j)} />;
+                               winner_css={this.state.winpieces[index]}
+                               onClick={() => this.props.onClick(row, column)} />;
   }
 
-  getSquare(row){
-    let trio = [];
+
+  /*
+    argv: the nth row of the board
+    return: one rendered row of the board
+  */
+  getRow(row_pos){
+    let row = [];
     for(let i = 1; i < Utils.column + 1; i++){
-      trio = trio.concat(this.renderSquare(row, i));
+      row = row.concat(this.renderSquare(row_pos, i));
     }
-    return trio;
+    return row;
   }
 
+
+  /*
+    called by render
+    return: rendered game board
+  */
   formatSquare(){
     let allSquares = [];
-    for(let i = 1; i < Utils.column + 1; i++){
+    for(let i = 1; i < Utils.row + 1; i++){
       allSquares = allSquares.concat(
         <div key={i} className="board-row">
-          {this.getSquare(i)}
+          {this.getRow(i)}
         </div>
       );
     }
     return allSquares;
   }
 
-  formatWinner(triopos){
-    if(!triopos){
+
+  /*
+    argv: a list of win's positions
+    effect: attach a "winner" tag to these positions, to add to CSS className later
+  */
+  formatWinner(winpieces){
+    if(!winpieces){
       this.setState({
-        triowin: {}
+        winpieces: {}
       })
       return;
     }
 
     let item = {};
     for(let i = 0; i < Utils.column; i++){
-      item[triopos[i]] = "winner";
+      console.log(winpieces[i]);       // also print out undefined?
+      item[winpieces[i]] = "winner";
     }
 
     this.setState({
-      triowin: item
+      winpieces: item
     })
   }
 
+
   render(){
-    console.log("in board render " + this.props.test + "\n");
     return (
       <div>
         {this.formatSquare()}
@@ -87,7 +114,7 @@ class Board extends Component {
 export default Board;
 
 
-//////// Source
+// return: the source code link
 function Source(){
   return (
     <a href="https://github.com/blindacai/Tic-Tac-Toe">Source Code</a>

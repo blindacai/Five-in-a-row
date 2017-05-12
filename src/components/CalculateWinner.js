@@ -152,7 +152,7 @@ function checkWin(board, win){
 
 /*
   agrv: 1. board(list): the current game board
-  return: the cause of win or null if not found
+  return: a list of win's positions or null if not found
   type: list
 */
 export function calculateWinner(board) {

@@ -20,9 +20,7 @@ class Game extends Component {
       clickAt: ["Game Start"],
       stepNumber: 0,
       xIsNext: true,
-      buttonState: true,
-
-      test: 0
+      buttonState: true
     };
   }  
 
@@ -48,8 +46,6 @@ class Game extends Component {
       clickAt: clickAt.concat([{posX: i, posY: j}]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
-
-      test: this.state.test + 1
     });
   }
 
@@ -86,22 +82,18 @@ class Game extends Component {
 
 
   render() {
-    console.log("in game render \n");
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const triopos = calculate.calculateWinner(current.squares);
-    const winner = triopos? current.squares[triopos[0]] : null;
+    const winpieces_g = calculate.calculateWinner(current.squares);
+    const winner = winpieces_g? current.squares[winpieces_g[0]] : null;
     const buttonText = this.state.buttonState? "Decrease" : "Increase";
-
-    const test = this.state.test;
 
     return (
       <div className="game">  
         <div className="game-board"> 
           <Board 
             squares={current.squares}
-            triopos={triopos}
-            test={test}
+            winpieces_b={winpieces_g}
             onClick={(i, j) => this.handleClick(i, j)}
           />
         </div>
@@ -110,9 +102,9 @@ class Game extends Component {
           <div className="game-info">
             <h2>{this.getStatus(winner)}</h2>
             <Order buttonState={buttonText} onClick={() => this.flipState()} />
-            <Moves moves={this.state.clickAt} 
-                  buttonState={this.state.buttonState}
-                  onClick={(index) => this.jumpTo(index)} />
+            <Moves moves={this.state.clickAt}
+                   buttonState={this.state.buttonState}
+                   onClick={(index) => this.jumpTo(index)} />
           </div>
           
           <PlusMinus title={"[?] in a row"} 
