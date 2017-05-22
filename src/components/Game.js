@@ -8,7 +8,16 @@ import Board from './Board';
 import Moves from './Moves';
 import PlusMinus from './UserControl';
 
-//////// Game
+
+// the entry point of the game
+/*
+  state desp:
+  history: a list of game board state (a new state added to the list after each user's step)
+  clickAt: a list of step's position
+  stepNumber:
+  xIsNext: true when next step is x, false when it should be o
+  buttonState: flip the order of history steps
+*/
 class Game extends Component {
   constructor(){
     super();
